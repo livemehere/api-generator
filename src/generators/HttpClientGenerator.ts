@@ -1,7 +1,8 @@
 import { ServiceOption } from "../type";
 import { parseBracket } from "../utils";
+import { Generator } from "./Generator";
 
-export class HttpClientGenerator {
+export class HttpClientGenerator implements Generator {
   options: ServiceOption;
   constructor(options: ServiceOption) {
     this.options = options;
@@ -21,7 +22,7 @@ export class HttpClientGenerator {
 
   private getHeaderCode() {
     return (
-      Object.entries(this.options.headers)
+      Object.entries(this.options.headers ?? {})
         .map(([key, value]) => this.generateHeader(key, value))
         .join(";") + ";"
     );

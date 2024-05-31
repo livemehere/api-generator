@@ -9,6 +9,11 @@ const config: ApiConfig = {
       headers: {
         Authorization: `Krpc <cookie>NPP</cookie>`,
       },
+      defaultScript: `
+                import { TMyPitchMessage } from '@shared/typings/my-pitch/MyPitchMessage';
+                import { ResponseGetWeeklyHighlight } from '@shared/typings/my-pitch/playreport';
+
+            `,
       apis: [
         {
           method: "GET",
@@ -16,11 +21,11 @@ const config: ApiConfig = {
           path: "/messages",
           useInfiniteQuery: {
             initialPageParam: 1,
-            pageKey: "page",
+            pageKey: "cum",
             getNextPageParam: "(lastPage) => lastPage.nextPage",
           },
           params: {
-            page: 0,
+            cum: 0,
           },
           response: {
             messages: "<raw>TMyPitchMessage[]</raw>",
@@ -128,6 +133,8 @@ const config: ApiConfig = {
             match_type: `<raw>50|52</raw>`,
             last_grade: 0,
             last_grade_name: "",
+            max_grade: 0,
+            max_grade_name: "",
             teamcolor: 0,
             teamcolor_url: "",
             teamcolor_name: "",
@@ -145,8 +152,10 @@ const config: ApiConfig = {
       baseURL: "https://sandbox.api.nexon.com/fco-my-pitch/yourfield/api",
       headers: {
         Authorization: `Krpc <cookie>NPP</cookie>`,
-        "x-api-key": "my-pitch",
       },
+      defaultScript: `
+                import { EmojiEnum, TSocialCard } from '@shared/typings/my-pitch/social-ground';
+            `,
       apis: [
         {
           method: "GET",
@@ -197,7 +206,7 @@ const config: ApiConfig = {
         {
           method: "GET",
           useInfiniteQuery: {
-            defaultTopScript: `
+            defaultScript: `
                             import { SOCIAL_CARDS_QUERY_KEY } from '@my-pitch/src/queries-utils/socialCards';
                         `,
             pageKey: "page",
@@ -219,7 +228,7 @@ const config: ApiConfig = {
           name: "updateCardEmoji",
           path: "of/socialcard/emoji",
           useMutation: {
-            invalidateApiName: "getSocialCards",
+            invalidateQueryKey: "['getSocialCards']",
           },
           params: {
             nexonsn: 0,

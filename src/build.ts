@@ -1,6 +1,5 @@
 import fs, { writeFileSync } from "fs";
 import { ServiceGenerator } from "./generators/ServiceGenerator";
-import { globSync } from "glob";
 import prettier from "prettier";
 import { ApiConfig } from "./type";
 import { resolve } from "path";
@@ -19,25 +18,9 @@ const config: ApiConfig = require(configPath).default;
 const rootPath = resolve(process.cwd(), config.path);
 const queriesPath = resolve(rootPath, "queries");
 
-/* INIT on RUNTIME */
-createDir(rootPath, true);
-createDir(queriesPath);
-writeFile(resolve(rootPath, HTTP_CLIENT_FILE_NAME), HTTP_CLIENT_CODE);
-buildServices();
+build().catch((e) => console.log(e));
 
-// build().catch((e) => console.log(e));
-
-/** Functions */
 async function build() {
-  const ignoreTargets = globSync(
-    (config.ignorePattern || []).map((pattern) => `${config.path}/${pattern}`),
-    {
-      ignore: "node_modules/**",
-    },
-  );
-
-  const ignorePaths = ignoreTargets.map((path) => resolve(process.cwd(), path));
-
   // load prettier options
   let prettierOptions = await prettier.resolveConfig(process.cwd());
   if (!prettierOptions) {
@@ -45,30 +28,31 @@ async function build() {
   }
   prettierOptions.parser = "typescript";
 
-  for (const [key, options] of Object.entries(config.services)) {
-    const service = new ServiceGenerator(key, options);
-    const serviceFilePath = resolve(rootPath, service.filename);
-    const serviceQueryRootPath = resolve(queriesPath, service.className);
-    createDir(serviceQueryRootPath);
+  createDir(rootPath, true);
+  createDir(queriesPath);
+  writeFile(resolve(rootPath, HTTP_CLIENT_FILE_NAME), HTTP_CLIENT_CODE);
 
-    // build service file only in ignoreTargets
-    service.buildService(serviceFilePath, ignorePaths, prettierOptions);
-    service.buildQueryHooks(serviceQueryRootPath, ignorePaths, prettierOptions);
-  }
-}
-
-function buildServices() {
+  /* Build APIs */
   for (const [key, options] of Object.entries(config.services)) {
     const service = new ServiceGenerator(key, options);
 
     // Service File
     const serviceFilePath = resolve(rootPath, service.filename);
-    writeFileSync(serviceFilePath, service.getCode());
+    const serviceCode = await prettier.format(
+      service.getCode(),
+      prettierOptions,
+    );
+    writeFileSync(serviceFilePath, serviceCode);
 
     // hook directory
     const serviceQueryRootPath = resolve(queriesPath, service.className);
     createDir(serviceQueryRootPath);
 
     // Tanstack Query Hook Files
+    for (const query of service.tanstackQueries) {
+      const filePath = resolve(serviceQueryRootPath, `${query.filename}.ts`);
+      const code = await prettier.format(query.getCode(), prettierOptions);
+      writeFileSync(filePath, code);
+    }
   }
 }

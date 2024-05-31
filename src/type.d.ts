@@ -1,3 +1,10 @@
+import {
+  CommonQueryHookOption,
+  UseInfiniteQueryOption,
+  UseMutationOption,
+  UseQueryOption,
+} from "./typings/Api-hooks";
+
 export interface ApiConfig {
   path: string;
   ignorePattern?: string[];
@@ -8,13 +15,12 @@ export interface ApiConfig {
 
 export interface ServiceOption {
   baseURL: string;
-  headers: HeaderSpec;
+  headers?: HeaderSpec;
   apis: ApiSpec[];
-  defaultTopScript?: string;
+  defaultScript?: string;
 }
 
 export interface HeaderSpec {
-  Authorization: string;
   [key: string]: string;
 }
 
@@ -25,20 +31,10 @@ export interface ApiSpec {
   response?: any;
   params?: Record<string, any>;
   body?: Record<string, any>;
-  useQuery?: boolean;
-  useQueryStrictParams?: boolean;
-  useMutation?: {
-    invalidateKey?: string;
-    invalidateApiName?: string;
-  };
-  useInfiniteQuery?: {
-    pageKey: string;
-    queryKey?: string;
-    initialPageParam: any;
-    getNextPageParam: string;
-    getPreviousPageParam?: string;
-    defaultTopScript?: string;
-  };
+  initialCallEvenParamsFalsy?: boolean; // default, useQuery initialCall when param's properties are all filled
+  useQuery?: UseQueryOption;
+  useMutation?: UseMutationOption;
+  useInfiniteQuery?: UseInfiniteQueryOption;
 }
 
 export interface ApiType {

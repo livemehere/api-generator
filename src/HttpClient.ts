@@ -52,21 +52,31 @@ export default class HttpClient {
 
   async post<T = any, D = any>(
     url: string,
-    data?: D,
     params?: Record<string, any>,
+    data?: D,
   ) {
     return this.instance.post<T>(url, data, { params }).then((res) => res.data);
   }
 
-  async put<T = any, D = any>(url: string, data?: D) {
-    return this.instance.put<T>(url, data).then((res) => res.data);
+  async put<T = any, D = any>(
+    url: string,
+    params?: Record<string, any>,
+    data?: D,
+  ) {
+    return this.instance.put<T>(url, data, { params }).then((res) => res.data);
   }
 
-  async delete<T = any>(url: string) {
-    return this.instance.delete<T>(url).then((res) => res.data);
+  async delete<T = any>(url: string, params?: Record<string, any>) {
+    return this.instance.delete<T>(url, { params }).then((res) => res.data);
   }
 
-  async patch<T = any, D = any>(url: string, data?: D) {
-    return this.instance.patch<T>(url, data).then((res) => res.data);
+  async patch<T = any, D = any>(
+    url: string,
+    params?: Record<string, any>,
+    data?: D,
+  ) {
+    return this.instance
+      .patch<T>(url, data, { params })
+      .then((res) => res.data);
   }
 }

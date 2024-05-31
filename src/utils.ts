@@ -1,9 +1,13 @@
 import fs from "fs";
 
 export function createDir(path: string, clear = false) {
-  if (fs.existsSync(path) && clear) {
+  const alreadyExist = fs.existsSync(path);
+  if (clear && alreadyExist) {
     fs.rmSync(path, { recursive: true });
   }
+
+  if (alreadyExist) return;
+
   fs.mkdirSync(path, { recursive: true });
 }
 
@@ -23,6 +27,22 @@ export function parseBracket(str: string) {
   } catch (e) {
     return { matchStr: null, key: null, value: null, isBracket: false };
   }
+}
+
+/* Resolve custom string syntax {key} */
+export function parseBlocks(str: string) {
+  let blocks = [];
+  try {
+    const regExp = /{([^}]+)}/g;
+    let match;
+    while ((match = regExp.exec(str))) {
+      const key = match[1];
+      blocks.push({ key, matchStr: match[0] });
+    }
+  } catch (e) {
+    /* empty */
+  }
+  return blocks;
 }
 
 export function toCamelCase(str: string) {
@@ -45,4 +65,11 @@ export function removeApostrophe(str: string) {
   return str.replace(/('|")(.+)\1/g, (word, g1) => {
     return word.replaceAll(g1, "");
   });
+}
+
+export function joinValidString(
+  values: (string | undefined | null)[],
+  delimiter = ",",
+) {
+  return values.filter(Boolean).join(delimiter);
 }
