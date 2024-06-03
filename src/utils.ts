@@ -1,4 +1,5 @@
 import fs from "fs";
+import ts from "typescript";
 
 export function createDir(path: string, clear = false) {
   const alreadyExist = fs.existsSync(path);
@@ -13,6 +14,16 @@ export function createDir(path: string, clear = false) {
 
 export function writeFile(path: string, text: string) {
   fs.writeFileSync(path, text, { encoding: "utf-8" });
+}
+
+export function loadTsFile(path: string) {
+  const source = fs.readFileSync(path, "utf-8");
+  const res = ts.transpileModule(source, {
+    compilerOptions: {
+      module: ts.ModuleKind.CommonJS,
+    },
+  });
+  return eval(res.outputText);
 }
 
 /* Resolve custom string syntax (<customTag>value</customTag>) */

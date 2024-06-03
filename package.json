@@ -6,6 +6,10 @@
   "author": "livemehere",
   "license": "MIT",
   "packageManager": "yarn@4.2.2",
+  "scripts": {
+    "build": "tsc",
+    "build:api": "node dist/build.js"
+  },
   "devDependencies": {
     "@tanstack/react-query": "^5.40.0",
     "@types/node": "^20.12.12",

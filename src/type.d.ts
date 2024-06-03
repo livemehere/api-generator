@@ -1,5 +1,4 @@
 import {
-  CommonQueryHookOption,
   UseInfiniteQueryOption,
   UseMutationOption,
   UseQueryOption,

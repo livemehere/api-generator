@@ -3,7 +3,7 @@ import { ServiceGenerator } from "./generators/ServiceGenerator";
 import prettier from "prettier";
 import { ApiConfig } from "./type";
 import { resolve } from "path";
-import { createDir, writeFile } from "./utils";
+import { createDir, loadTsFile, writeFile } from "./utils";
 
 /* FIX */
 const HTTP_CLIENT_FILE_NAME = "HttpClient.ts";
@@ -13,7 +13,7 @@ const HTTP_CLIENT_CODE = fs.readFileSync(
 );
 
 const configPath = resolve(process.cwd(), "api.config.ts");
-const config: ApiConfig = require(configPath).default;
+const config: ApiConfig = loadTsFile(configPath);
 
 const rootPath = resolve(process.cwd(), config.path);
 const queriesPath = resolve(rootPath, "queries");

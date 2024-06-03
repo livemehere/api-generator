@@ -10,4 +10,5 @@ const res = typescript.transpileModule(source, {
   },
 });
 
-console.log(res.outputText);
+const configObj = eval(res.outputText);
+console.log(configObj);
