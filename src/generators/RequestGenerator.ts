@@ -47,9 +47,13 @@ export class RequestGenerator implements Generator {
       ? `${bodyExist ? "body" : "null"}`
       : "";
     const httpParamString = paramExist ? "params" : "";
-    const httpArgsString = [httpParamString, httpBodyString]
+    let httpArgsString = [httpParamString, httpBodyString]
       .filter((str) => str != "")
       .join(",");
+
+    if (!paramExist && bodyExist) {
+      httpArgsString = `undefined,body`;
+    }
 
     const pathParams = parseBlocks(this.api.path);
     if (pathParams.length > 0) {
@@ -58,17 +62,27 @@ export class RequestGenerator implements Generator {
       const filteredParamKeys = Object.keys(this.api.params!).filter(
         (key) => !pathParamKeys.includes(key),
       );
+      const hasRestParam = filteredParamKeys.length > 0;
 
       pathParams.forEach((param) => {
         const { key, matchStr } = param;
         parsedPath = parsedPath.replace(matchStr, `\${params.${key}}`);
       });
 
+      let _httpArgsString = `,${httpArgsString.replace("params", hasRestParam ? "_params" : "undefined")}`;
+      if (_httpArgsString === ",undefined") {
+        _httpArgsString = "";
+      }
+
       this.method = `async ${this.api.name}(${argsString}) { 
-        const _params = {
+        ${
+          hasRestParam
+            ? `const _params = {
             ${filteredParamKeys.map((key) => `${key}: params.${key}`).join(",\n")}
+        }`
+            : ""
         }
-        return this.httpClient.${method}<${responseTypeName || "any"}${bodyExist ? `,${bodyTypeName}` : ""}>(\`${parsedPath}\`${httpArgsString.length > 0 ? `,${httpArgsString.replace("params", "_params")}` : ""}); 
+        return this.httpClient.${method}<${responseTypeName || "any"}${bodyExist ? `,${bodyTypeName}` : ""}>(\`${parsedPath}\`${httpArgsString.length > 0 ? _httpArgsString : ""}); 
       }`;
     } else {
       this.method = `async ${this.api.name}(${argsString}) { 
