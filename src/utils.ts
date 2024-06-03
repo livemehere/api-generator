@@ -84,3 +84,21 @@ export function joinValidString(
 ) {
   return values.filter(Boolean).join(delimiter);
 }
+
+export function isIgnoreFile(list: string[], path: string) {
+  return list.some((ignorePath) => path.includes(ignorePath));
+}
+
+export function getFileStringOrNull(path: string) {
+  const exist = fs.existsSync(path);
+  if (!exist) return null;
+  return fs.readFileSync(path, "utf-8");
+}
+
+export function isDiff(str1?: string | null, str2?: string | null) {
+  return str1 !== str2;
+}
+
+export function getLogTitle(prevCodeExist: boolean, isDiff: boolean) {
+  return prevCodeExist ? (isDiff ? "Updated" : "Already exists") : "Created";
+}

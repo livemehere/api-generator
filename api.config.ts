@@ -2,7 +2,7 @@ import { ApiConfig } from "./src/typings";
 
 const config: ApiConfig = {
   path: "result/api",
-  ignorePattern: ["**/HttpClient.ts", "**/useMutateUpdateCardEmoji.ts"],
+  ignorePattern: ["**/HttpClient.ts", "**/useGetTodo.ts"],
   services: {
     json: {
       baseURL: "http://localhost:4000",
