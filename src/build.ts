@@ -28,7 +28,7 @@ async function build() {
   }
   prettierOptions.parser = "typescript";
 
-  createDir(rootPath, true);
+  createDir(rootPath);
   createDir(queriesPath);
   writeFile(resolve(rootPath, HTTP_CLIENT_FILE_NAME), HTTP_CLIENT_CODE);
 

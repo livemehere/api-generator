@@ -1,4 +1,4 @@
-import { ApiConfig } from "./src/type";
+import { ApiConfig } from "./src/typings";
 
 const config: ApiConfig = {
   path: "result/api",
