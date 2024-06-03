@@ -1,4 +1,4 @@
-import { ServiceOption } from "../type";
+import { ServiceOption } from "../typings";
 import { parseBracket } from "../utils";
 import { Generator } from "./Generator";
 

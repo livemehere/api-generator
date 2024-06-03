@@ -1,9 +1,5 @@
-import fs from "fs";
-import jsonToTs from "json-to-ts";
-import prettier from "prettier";
-import { ApiSpec, ApiType, ServiceOption } from "../type";
-import { resolve } from "path";
-import { parseBracket, toCamelCase, toPascalCase } from "../utils";
+import { ServiceOption } from "../typings";
+import { toCamelCase, toPascalCase } from "../utils";
 import { HttpClientGenerator } from "./HttpClientGenerator";
 import { RequestGenerator } from "./RequestGenerator";
 import { Generator } from "./Generator";

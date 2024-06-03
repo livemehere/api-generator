@@ -1,9 +1,9 @@
 import fs, { writeFileSync } from "fs";
 import { ServiceGenerator } from "./generators/ServiceGenerator";
 import prettier from "prettier";
-import { ApiConfig } from "./type";
 import { resolve } from "path";
 import { createDir, loadTsFile, writeFile } from "./utils";
+import { ApiConfig } from "./typings";
 
 /* FIX */
 const HTTP_CLIENT_FILE_NAME = "HttpClient.ts";

@@ -2,7 +2,7 @@ import {
   UseInfiniteQueryOption,
   UseMutationOption,
   UseQueryOption,
-} from "./typings/Api-hooks";
+} from "./Api-hooks";
 
 export interface ApiConfig {
   path: string;

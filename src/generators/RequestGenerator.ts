@@ -1,4 +1,4 @@
-import { ApiSpec, ApiType } from "../type";
+import { ApiSpec, ApiType } from "../typings";
 import { parseBlocks, parseBracket, toPascalCase } from "../utils";
 import jsonToTs from "json-to-ts";
 import { Generator } from "./Generator";

@@ -1,5 +1,5 @@
 import { Generator } from "./Generator";
-import { ApiSpec, ApiType } from "../type";
+import { ApiSpec, ApiType } from "../typings";
 import { RequestGenerator } from "./RequestGenerator";
 import { joinValidString, toPascalCase } from "../utils";
 import { CommonQueryHookOption, UseMutationOption } from "../typings/Api-hooks";

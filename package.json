@@ -8,14 +8,18 @@
   "packageManager": "yarn@4.2.2",
   "scripts": {
     "build": "tsc",
-    "copyClientFile": "cp src/HttpClient.ts dist/HttpClient.ts",
+    "copyHttpClient": "cp-cli ./src/HttpClient.ts ./dist/HttpClient.ts",
     "build:api": "node dist/build.js"
   },
   "devDependencies": {
     "@tanstack/react-query": "^5.40.0",
+    "@types/express": "^4.17.21",
     "@types/node": "^20.12.12",
     "axios": "^1.7.2",
+    "cp-cli": "^2.0.0",
+    "express": "^4.19.2",
     "ts-node": "^10.9.2",
+    "tslib": "^2.6.2",
     "typescript": "^5.4.5"
   },
   "dependencies": {
