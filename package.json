@@ -1,6 +1,7 @@
 {
-  "name": "api-generator",
+  "name": "@livemehere/api-generator",
   "version": "0.0.1",
+  "private": false,
   "description": "Generate api code, types, hooks(optional) with one config file",
   "bin": "dist/build.js",
   "main": "dist/build.js",
