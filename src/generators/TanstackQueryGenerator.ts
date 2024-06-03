@@ -157,7 +157,7 @@ export class TanstackQueryGenerator implements Generator {
     const { paramTypeName, paramExist } = this.types;
 
     if (commonOption?.enabled) {
-      return commonOption.enabled;
+      return `enabled: ${commonOption.enabled}`;
     }
 
     if (!paramExist) return "";
