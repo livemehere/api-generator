@@ -1,4 +1,4 @@
-# @livemehere/api-Generator
+# @livemehere/api-generator
 
 ![logo.webp](img%2Flogo.webp)
 
