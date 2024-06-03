@@ -30,6 +30,7 @@ export class HttpClientGenerator implements Generator {
 
   private generateHeader(key: string, value: string) {
     const parseValue = parseBracket(value);
+    console.log(parseValue)
     if (!parseValue.isBracket) {
       return `config.headers['${key}'] = "${value}"`;
     }
@@ -37,6 +38,10 @@ export class HttpClientGenerator implements Generator {
     switch (parseValue.key) {
       case "cookie":
         return `config.headers['${key}'] = \`${value.replace(parseValue.matchStr, `$\{HttpClient.getFromCookie("${parseValue.value}")}`)}\``;
+      case "localStorage":
+        return `config.headers['${key}'] = \`${value.replace(parseValue.matchStr, `$\{HttpClient.getFromLocalStorage("${parseValue.value}")}`)}\``;
+      case "sessionStorage":
+        return `config.headers['${key}'] = \`${value.replace(parseValue.matchStr, `$\{HttpClient.getFromSessionStorage("${parseValue.value}")}`)}\``;
       default:
         throw new Error(`unsupported custom tag <${parseValue.key}>`);
     }

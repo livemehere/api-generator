@@ -3,13 +3,15 @@
 import { ApiConfig } from "./src/typings";
 
 const config: ApiConfig = {
-  path: "src/api", // output directory
+  path: "result/api", // output directory
   ignorePattern: ["**/useCustomApiHook.ts"], // glob pattern for ignore files
   services: {
     serviceA: {
       baseURL: "https://api.serviceA.com",
       headers: {
         Authorization: "Bearer <cookie>key from cookie</cookie>",
+        "x-custom-header1": "<localStorage>userId</localStorage>",
+        "x-custom-header2": "<sessionStorage>token</sessionStorage>",
       },
       apis: [
         // endpoints

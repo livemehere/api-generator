@@ -431,7 +431,9 @@ services:{
     serviceA:{
         baseURL:'https://api.serviceA.com',
         headers: {
-            Authorization: "Bearer <cookie>key from cookie</cookie>"
+            Authorization: "Bearer <cookie>key from cookie</cookie>",
+            "x-custom-header1": "<localStorage>userId</localStorage>",
+            "x-custom-header2": "<sessionStorage>token</sessionStorage>",
         }
     }
 }
@@ -446,9 +448,49 @@ class ServiceAService {
         // ...
         requestHook: (config) => {
             config.headers["Authorization"] = `Bearer ${HttpClient.getFromCookie("key from cookie")}`;
+            config.headers["x-custom-header1"] = `${HttpClient.getFromLocalStorage("userId")}`;
+            config.headers["x-custom-header2"] = `${HttpClient.getFromSessionStorage("token")}`;
             return config;
         },
     });
     // ...
 }
 ```
+
+#### code implementation
+
+```ts
+  static parseCookie(cookie: string) {
+    return Object.fromEntries(
+      cookie.split("; ").map((c) => {
+        // eslint-disable-next-line prefer-const
+        let [key, v] = c.split("=");
+        try {
+          v = JSON.parse(decodeURIComponent(v));
+        } catch (e) {
+          /* empty */
+        }
+        return [key, v];
+      }),
+    );
+  }
+
+  static getFromCookie(key: string) {
+    const cookie = document?.cookie ?? "";
+    const cookieMap = HttpClient.parseCookie(cookie);
+    return cookieMap[key];
+  }
+
+  static getFromLocalStorage(key: string) {
+    return localStorage.getItem(key);
+  }
+
+  static getFromSessionStorage(key: string) {
+      return sessionStorage.getItem(key);
+  }
+```
+
+## Done!
+
+That's it! It made from my personal experience and I hope it helps you. And I'll update more features and options when getting more experience.   
+I hope you contribute to this library with your experience. Thanks!

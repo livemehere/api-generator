@@ -46,6 +46,14 @@ export default class HttpClient {
     return cookieMap[key];
   }
 
+  static getFromLocalStorage(key: string) {
+    return localStorage.getItem(key);
+  }
+
+  static getFromSessionStorage(key: string) {
+      return sessionStorage.getItem(key);
+  }
+
   async get<T = any>(url: string, params?: Record<string, any>) {
     return this.instance.get<T>(url, { params }).then((res) => res.data);
   }
