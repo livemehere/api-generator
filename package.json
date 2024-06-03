@@ -1,7 +1,6 @@
 {
   "name": "@livemehere/api-generator",
-  "version": "0.0.1",
-  "private": false,
+  "version": "0.0.2",
   "description": "Generate api code, types, hooks(optional) with one config file",
   "bin": "dist/build.js",
   "main": "dist/build.js",
@@ -11,7 +10,8 @@
   "packageManager": "yarn@4.2.2",
   "scripts": {
     "build": "yarn webpack",
-    "build:api": "node dist/build.js"
+    "build:api": "node dist/build.js",
+    "publish": "npm publish --access public"
   },
   "devDependencies": {
     "@tanstack/react-query": "^5.40.0",

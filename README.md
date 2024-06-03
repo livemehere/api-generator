@@ -5,7 +5,7 @@ import { ApiConfig } from "./src/type";
 
 const config: ApiConfig = {
   path: "result/api",
-  ignorePattern: ["**/HttpClient.ts", "**/useMutateUpdateCardEmoji.ts"],
+  ignorePattern: ["**/HttpClient.ts", "**/useGetTodo.ts"],
   services: {
     json: {
       baseURL: "https://jsonplaceholder.typicode.com",

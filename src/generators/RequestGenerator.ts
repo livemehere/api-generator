@@ -44,7 +44,7 @@ export class RequestGenerator implements Generator {
       .join(",");
 
     const httpBodyString = hasBodyMethod
-      ? `${bodyExist ? "body" : "null"}`
+      ? `${bodyExist ? "body" : "undefined"}`
       : "";
     const httpParamString = paramExist ? "params" : "";
     let httpArgsString = [httpParamString, httpBodyString]
@@ -53,6 +53,10 @@ export class RequestGenerator implements Generator {
 
     if (!paramExist && bodyExist) {
       httpArgsString = `undefined,body`;
+    }
+
+    if (paramExist && !bodyExist) {
+      httpArgsString = `params`;
     }
 
     const pathParams = parseBlocks(this.api.path);
