@@ -8,6 +8,7 @@
   "packageManager": "yarn@4.2.2",
   "scripts": {
     "build": "tsc",
+    "copyClientFile": "cp src/HttpClient.ts dist/HttpClient.ts",
     "build:api": "node dist/build.js"
   },
   "devDependencies": {
