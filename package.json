@@ -2,6 +2,14 @@
   "name": "@livemehere/api-generator",
   "version": "0.0.3",
   "description": "Generate api code, types, hooks(optional) with one config file",
+  "keywords": [
+      "api",
+      "generator",
+      "typescript",
+      "axios",
+      "react-query"
+  ],
+  "repository": "https://github.com/livemehere/api-generator",
   "bin": "dist/build.js",
   "main": "dist/build.js",
   "types": "dist/typings/index.d.ts",

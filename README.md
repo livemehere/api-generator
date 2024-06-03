@@ -2,6 +2,8 @@
 
 This library is a Typescript code generator for HTTP requests and React hooks based on [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview).   
 
+#### [npm](https://www.npmjs.com/package/@livemehere/api-generator)
+
 ## Features
 
 - Configure API with `api.config.ts` file.
