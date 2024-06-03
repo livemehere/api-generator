@@ -26,7 +26,7 @@ Create `api.config.ts` file in the root of your project.
 ```ts
 // api.config.ts
 
-import { ApiConfig } from "./src/typings";
+import { ApiConfig } from "@livemehere/api-generator";
 
 const config: ApiConfig = {
     path:'src/api', // output directory
