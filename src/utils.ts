@@ -29,7 +29,7 @@ export function loadTsFile(path: string) {
 /* Resolve custom string syntax (<customTag>value</customTag>) */
 export function parseBracket(str: string) {
   try {
-    const regExp = /<(.+)>(.+)<\/\1>/g;
+    const regExp = /<(.+?)>([\s\S]*?)<\/\1>/g;
     const match = regExp.exec(str)!;
     const matchStr = match[0];
     const key = match[1];

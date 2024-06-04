@@ -146,6 +146,7 @@ export class RequestGenerator implements Generator {
     // 1. primitive type or <raw> tag;
     if (obj && typeof obj !== "object") {
       const bracketParse = parseBracket(obj);
+      console.log(obj, bracketParse);
       return `export type ${name} = ${bracketParse.value || typeof obj};`;
     }
 

@@ -57,12 +57,19 @@ const config: ApiConfig = {
             description: `<raw>string|undefined</raw>`,
             isCompleted: `<raw>boolean|undefined</raw>`,
           },
-          response: {
-            id: 0,
-            title: "",
-            description: "",
-            isCompleted: true,
-          },
+          response: `<raw>
+            {
+                hasPreviousReports: boolean;
+                currentReportSummary:{
+                    nexonsn: number;
+                    week_start_date: string;
+                    value: number;
+                    match_type: 50 | 52;
+                    type: 'WIN_RATE' | 'CNT_MATCH' | 'POSSESSION' | 'CLUB_VALUE';
+                    trend: 'EQUAL' | 'INCREASE' | 'DECREASE';
+                }|null
+            }
+        </raw>`,
           useMutation: true,
         },
       ],
