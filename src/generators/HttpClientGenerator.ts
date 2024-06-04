@@ -11,7 +11,7 @@ export class HttpClientGenerator implements Generator {
   getCode() {
     return `
              private httpClient: HttpClient = new HttpClient({
-                baseURL: "${this.options.baseURL}",
+                baseURL: ${this.generateBaseUrl()},
                 requestHook: (config) => {
                     ${this.getHeaderCode()};
                     return config;
@@ -26,6 +26,22 @@ export class HttpClientGenerator implements Generator {
         .map(([key, value]) => this.generateHeader(key, value))
         .join(";") + ";"
     );
+  }
+
+  private generateBaseUrl() {
+    const parsedBaseUrl = parseBracket(this.options.baseURL);
+    if (!parsedBaseUrl.isBracket) {
+      return `"${this.options.baseURL}"`;
+    }
+    switch (parsedBaseUrl.key) {
+      case "raw":
+        return this.options.baseURL.replace(
+          parsedBaseUrl.matchStr,
+          parsedBaseUrl.value,
+        );
+      default:
+        throw new Error(`unsupported custom tag <${parsedBaseUrl.key}>`);
+    }
   }
 
   private generateHeader(key: string, value: string) {

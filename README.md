@@ -429,11 +429,12 @@ Sometimes you need your own types or something. Import that with `defaultScript`
 
 Sometimes you need to get value from `localStorage` or `cookie` for `Authorization` header or anything.   
 We prepare `headers` option and `<cookie>`, `<localstorage>`, `<sessionstorage>` tag for that.   
+And `<raw></raw>` tag for baseURL. In case of need to use like env variable.   
 
 ```ts   
 services:{
     serviceA:{
-        baseURL:'https://api.serviceA.com',
+        baseURL: "<raw>import.meta.env.MY_API_URL</raw>",
         headers: {
             Authorization: "Bearer <cookie>key from cookie</cookie>",
             "x-custom-header1": "<localStorage>userId</localStorage>",

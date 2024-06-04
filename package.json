@@ -1,6 +1,6 @@
 {
   "name": "@livemehere/api-generator",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Generate api code, types, hooks(optional) with one config file",
   "keywords": [
       "api",

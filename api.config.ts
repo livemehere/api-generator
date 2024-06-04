@@ -7,7 +7,7 @@ const config: ApiConfig = {
   ignorePattern: ["**/useCustomApiHook.ts"], // glob pattern for ignore files
   services: {
     serviceA: {
-      baseURL: "https://api.serviceA.com",
+      baseURL: "<raw>import.meta.env.MY_API_URL</raw>",
       headers: {
         Authorization: "Bearer <cookie>key from cookie</cookie>",
         "x-custom-header1": "<localStorage>userId</localStorage>",
