@@ -30,7 +30,6 @@ export class HttpClientGenerator implements Generator {
 
   private generateHeader(key: string, value: string) {
     const parseValue = parseBracket(value);
-    console.log(parseValue)
     if (!parseValue.isBracket) {
       return `config.headers['${key}'] = "${value}"`;
     }
