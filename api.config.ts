@@ -72,6 +72,23 @@ const config: ApiConfig = {
         </raw>`,
           useMutation: true,
         },
+        {
+          name: "getStatus",
+          method: "POST",
+          path: "/checkStatus",
+          useQuery: {
+            strictParams: true,
+          },
+
+          body: {
+            id: 0,
+            region: "",
+          },
+          response: {
+            status: "",
+            message: "",
+          },
+        },
       ],
     },
   },

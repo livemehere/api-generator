@@ -77,12 +77,21 @@ export class TanstackQueryGenerator implements Generator {
       : `Partial<${paramTypeName}>`;
   }
 
+  /** When use body as useQuery parameters */
+  private getParamFromBodyTypeStr() {
+    const commonOption = this.getCommonOptions();
+    const { bodyTypeName } = this.types;
+    return commonOption?.strictParams
+      ? bodyTypeName
+      : `Partial<${bodyTypeName}>`;
+  }
+
   private getImportStr() {
     const { paramTypeName, bodyTypeName } = this.types;
     if (this.api.useQuery) {
       return `
        import { useQuery } from '@tanstack/react-query';
-       import { ${joinValidString([paramTypeName, this.serviceInstanceName])} } from '../../${this.serviceClassName}';
+       import { ${joinValidString([paramTypeName, bodyTypeName, this.serviceInstanceName])} } from '../../${this.serviceClassName}';
      `;
     }
 
@@ -113,7 +122,7 @@ export class TanstackQueryGenerator implements Generator {
     }
 
     if (this.api.useQuery) {
-      return `['${this.api.name}'${this.types.paramExist ? `,JSON.stringify(params)` : ""}]`;
+      return `['${this.api.name}'${this.types.paramExist ? `,JSON.stringify(params)` : ""} ${this.types.bodyExist ? ",JSON.stringify(body)" : ""}]`;
     }
     if (this.api.useInfiniteQuery) {
       const { paramTypeName } = this.types;
@@ -132,7 +141,7 @@ export class TanstackQueryGenerator implements Generator {
     }
 
     if (this.api.useQuery) {
-      return `() => ${this.serviceInstanceName}.${this.api.name}(${paramExist ? `params as NonNullable<${paramTypeName}>` : ""})`;
+      return `() => ${this.serviceInstanceName}.${this.api.name}(${paramExist ? `params as NonNullable<${paramTypeName}>` : ""} ${bodyExist ? `${paramExist ? "," : ""}body as NonNullable<${bodyTypeName}>` : ""})`;
     }
 
     if (this.api.useInfiniteQuery) {
@@ -154,16 +163,22 @@ export class TanstackQueryGenerator implements Generator {
 
   private getEnableStr() {
     const commonOption = this.getCommonOptions();
-    const { paramTypeName, paramExist } = this.types;
+    const { paramTypeName, paramExist, bodyExist, bodyTypeName } = this.types;
 
     if (commonOption?.enabled) {
       return `enabled: ${commonOption.enabled}`;
     }
 
-    if (!paramExist) return "";
+    if (!paramExist && !bodyExist) return "";
 
     if (this.api.useQuery) {
-      return `enabled: Object.keys(params).every((key) => params[key as keyof ${paramTypeName}] != null )`;
+      if (paramExist && !bodyExist) {
+        return `enabled: Object.keys(params).every((key) => params[key as keyof ${paramTypeName}] != null )`;
+      }
+      if (!paramExist && bodyExist) {
+        return `enabled: Object.keys(body).every((key) => body[key as keyof ${bodyTypeName}] != null )`;
+      }
+      return `enabled: Object.keys(params).every((key) => params[key as keyof ${paramTypeName}] != null ) && Object.keys(body).every((key) => body[key as keyof ${bodyTypeName}] != null )`;
     }
 
     if (this.api.useInfiniteQuery) {
@@ -175,12 +190,12 @@ export class TanstackQueryGenerator implements Generator {
   }
 
   private getUseQueryCode() {
-    const { paramExist } = this.types;
+    const { paramExist, bodyExist } = this.types;
     return `
       ${this.getImportStr()}
       ${this.getDefaultScriptStr()}
       
-      const ${this.filename} = (${paramExist ? `params: ${this.getParamTypeStr()}` : ""}) => {
+      const ${this.filename} = (${paramExist ? `params: ${this.getParamTypeStr()}` : ""} ${bodyExist ? `${paramExist ? "," : ""} body: ${this.getParamFromBodyTypeStr()}` : ""}) => {
           return useQuery({
               queryKey: ${this.getQueryKeyStr()},
               queryFn: ${this.getQueryFnStr()},
