@@ -495,6 +495,25 @@ class ServiceAService {
   }
 ```
 
+### FormData for `body`
+
+If you need to use `FormData` for `body`, `forData` option to `true`.
+
+```ts
+ apis: [
+    {
+      name: "uploadFile",
+      method: "POST",
+      formData: true, // here 
+      path: "/upload",
+      body: {
+        file: `<raw>File</raw>`, // raw value for complex type
+      },
+    },
+]
+```
+
+
 ## Done!
 
 That's it! It made from my personal experience and I hope it helps you. And I'll update more features and options when getting more experience.   

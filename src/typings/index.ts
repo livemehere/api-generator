@@ -31,6 +31,7 @@ export interface ApiSpec {
   params?: Record<string, any>;
   body?: Record<string, any>;
   initialCallEvenParamsFalsy?: boolean; // default, useQuery initialCall when param's properties are all filled
+  formData?: boolean;
   useQuery?: UseQueryOption;
   useMutation?: UseMutationOption;
   useInfiniteQuery?: UseInfiniteQueryOption;

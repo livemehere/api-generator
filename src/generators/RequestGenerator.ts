@@ -34,6 +34,7 @@ export class RequestGenerator implements Generator {
       paramExist,
       responseExist,
     } = this.types;
+    const isFormData = this.api.formData;
     const method = this.api.method.toLowerCase();
     const hasBodyMethod = method !== "get" && method !== "delete";
 
@@ -44,7 +45,7 @@ export class RequestGenerator implements Generator {
       .join(",");
 
     const httpBodyString = hasBodyMethod
-      ? `${bodyExist ? "body" : "undefined"}`
+      ? `${bodyExist ? (isFormData ? "formData" : "body") : "undefined"}`
       : "";
     const httpParamString = paramExist ? "params" : "";
     let httpArgsString = [httpParamString, httpBodyString]
@@ -52,7 +53,7 @@ export class RequestGenerator implements Generator {
       .join(",");
 
     if (!paramExist && bodyExist) {
-      httpArgsString = `undefined,body`;
+      httpArgsString = `undefined,${isFormData ? "formData" : "body"}`;
     }
 
     if (paramExist && !bodyExist) {
@@ -86,13 +87,23 @@ export class RequestGenerator implements Generator {
         }`
             : ""
         }
-        return this.httpClient.${method}<${responseTypeName || "any"}${bodyExist ? `,${bodyTypeName}` : ""}>(\`${parsedPath}\`${httpArgsString.length > 0 ? _httpArgsString : ""}); 
+         ${this.generateFormData()}
+        return this.httpClient.${method}<${responseTypeName || "any"}${bodyExist ? `,${isFormData ? "any" : bodyTypeName}` : ""}>(\`${parsedPath}\`${httpArgsString.length > 0 ? _httpArgsString : ""}); 
       }`;
     } else {
       this.method = `async ${this.api.name}(${argsString}) { 
-        return this.httpClient.${method}<${responseTypeName || "any"}${bodyExist ? `,${bodyTypeName}` : ""}>(\`${this.api.path}\`${httpArgsString.length > 0 ? `,${httpArgsString}` : ""}); 
+      ${this.generateFormData()}
+        return this.httpClient.${method}<${responseTypeName || "any"}${bodyExist ? `,${isFormData ? "any" : bodyTypeName}` : ""}>(\`${this.api.path}\`${httpArgsString.length > 0 ? `,${httpArgsString}` : ""}); 
     }`;
     }
+  }
+
+  private generateFormData() {
+    if (!this.api.formData) return "";
+    return `const formData = new FormData();
+    Object.entries(body).forEach(([key, value]) => {
+        formData.append(key, value);
+    });`;
   }
 
   private generateTypes() {
